@@ -85,8 +85,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    // countDownController.pause();
-    // get_current_second();
+
   }
 
   @override
@@ -209,9 +208,10 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                   ),
                 );
               }),
-    height20,
-                      height20,
-                      height20,              BlocBuilder<QuizzCubit, QuizzState>(
+              height20,
+              height20,
+              height20,
+              BlocBuilder<QuizzCubit, QuizzState>(
                 builder: (context, state) {
                   return Column(
                     children: [
@@ -231,7 +231,9 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                         onPressed: () {
                           if (state is TimerState) {
                             on_click();
-                          } else if (state is InitState||state is FailureState||state is SuccesState) {
+                          } else if (state is InitState ||
+                              state is FailureState ||
+                              state is SuccesState) {
                             on_start();
                           }
                         },
