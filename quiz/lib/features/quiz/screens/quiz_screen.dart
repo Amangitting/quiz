@@ -9,7 +9,8 @@ import 'package:quiz/config/app_text_styles.dart';
 import 'package:quiz/config/constants.dart';
 import 'package:quiz/config/spacer.dart';
 import 'package:quiz/cubit/quizz_cubit.dart';
-import 'package:quiz/features/quiz/widgets.dart';
+import 'package:quiz/features/quiz/screens/widgets/counting_containers.dart';
+import 'package:quiz/features/quiz/screens/widgets/timer_widget.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -19,12 +20,10 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
-  ValueNotifier<int> current_second = ValueNotifier(-1);
-  ValueNotifier<int> random_number = ValueNotifier(-1);
-  ValueNotifier<int> countdown = ValueNotifier(-1);
+  ValueNotifier<int> current_second = ValueNotifier(0);
+  ValueNotifier<int> random_number = ValueNotifier(0);
   Timer get_current_second_timer =
-      Timer.periodic(Duration(seconds: 1), (timer) {});
-  late Animation<Color> value_color;
+      Timer.periodic(const Duration(seconds: 1), (timer) {});
   int success = 0;
 
   int total = 0;
@@ -40,7 +39,8 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
   }
 
   get_current_second() {
-    get_current_second_timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    get_current_second_timer =
+        Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!is_app_minimize) {
         current_second.value = DateTime.now().second;
         get_random_number();
@@ -82,14 +82,15 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
-    get_current_second();
+    // get_current_second();
+    // countDownController.pause();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
     get_current_second_timer.cancel();
   }
@@ -101,7 +102,6 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     if (state == AppLifecycleState.paused) {
       when_app_minimzed();
     } else if (state == AppLifecycleState.resumed) {
-      // App is in the foreground
       when_app_resumed();
     }
   }
@@ -111,7 +111,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     double screen_height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Quizz"),
+        title: const Text("Quizz"),
       ),
       body: Padding(
           padding: screen_padding,
@@ -141,8 +141,6 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                   total = total + 1;
                 } else if (state is FailureState) {
                   total = total + 1;
-                } else if (state is TimerState) {
-                  // on_start();
                 }
 
                 // TODO: implement listener
@@ -168,7 +166,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                         style: AppTextStyle.blackHeader1
                             .copyWith(color: Colors.white),
                       ),
-                      Divider(
+                      const Divider(
                         thickness: .5,
                         color: Colors.black,
                       ),
@@ -177,7 +175,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                         style: AppTextStyle.subHeader4
                             .copyWith(color: Colors.white),
                       ),
-                      Divider(
+                      const Divider(
                         thickness: .5,
                         color: Colors.black,
                       ),
@@ -194,29 +192,17 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                   ),
                 );
               }),
-              Spacer(),
+              const Spacer(),
               BlocBuilder<QuizzCubit, QuizzState>(
                 builder: (context, state) {
                   return Column(
                     children: [
-                      CircularCountDownTimer(
-                        isReverseAnimation: true,
-                        width: screen_width / 3,
-                        height: screen_width / 3,
-                        duration: 6,
-                        fillColor: AppColor.green_color,
-                        ringColor: Colors.grey.shade300,
-                        strokeWidth: 10,
-                        isReverse: true,
-                        textFormat: CountdownTextFormat.MM_SS,
-                        controller: countDownController,
-                        // onStart: (){
-                        //   on_start();
-                        // },
-                        onComplete: () {
-                          on_click();
-                        },
-                      ),
+                      TimerWidget(
+                          countDownController: countDownController,
+                          size: screen_width / 3,
+                          on_complete: () {
+                            on_click();
+                          }),
                       height20,
                       height20,
                       height20,

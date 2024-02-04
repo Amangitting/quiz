@@ -1,3 +1,5 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
- BorderRadius radius=  BorderRadius.circular(10);
+replace_screen(BuildContext context, screen){
+  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>screen));
+}
