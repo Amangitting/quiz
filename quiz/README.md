@@ -3,14 +3,31 @@
 A new Flutter project.
 
 ## Getting Started
+I named this project quizz,
+For state management I used Bloc
+I faced a problem when Timer times out , and there is no random number matching with current second
+so i have changed the range (four second before current second, and 4 seconds after current second),
 
-This project is a starting point for a Flutter application.
+I am use=ing four states as of now
+initial state 
+succes state
+Failure state
+Timer state 
 
-A few resources to get you started if this is your first Flutter project:
+I also implemented retained countdown timer state state when phone gets minimized
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Although it is a simple app but tried to make its sacalable app and following 
+using textstyles in different file
+colors. in different file
+some helper functions and widgets
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+so thet you can judge on this basis
+
+
+My details
+name aman kumar
+location jalandhar
+experience 3 years
+email amankrp1880@gmail.com
+
+
