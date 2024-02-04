@@ -73,6 +73,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
   }
 
   on_start() {
+    countDownController.start();
     get_current_second();
     BlocProvider.of<QuizzCubit>(context).on_start();
     countDownController.restart();
@@ -84,8 +85,8 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    // get_current_second();
     // countDownController.pause();
+    // get_current_second();
   }
 
   @override
@@ -106,11 +107,36 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     }
   }
 
+  Color get_color(QuizzState state) {
+    if (state is InitState) {
+      return AppColor.button_color;
+    } else if (state is TimerState) {
+      return AppColor.purple_color;
+    } else if (state is SuccesState) {
+      return AppColor.green_color;
+    } else {
+      return AppColor.primary_color;
+    }
+  }
+
+  String get_title(QuizzState state) {
+    if (state is InitState) {
+      return "Let's start";
+    } else if (state is TimerState) {
+      return "All the best and Best of Luck";
+    } else if (state is SuccesState) {
+      return "Yayy ! Success, You are great";
+    } else {
+      return "Sorry ! you missed this time Try again";
+    }
+  }
+
   Widget build(BuildContext context) {
     double screen_width = MediaQuery.of(context).size.width;
     double screen_height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColor.blue_color,
         title: const Text("Quizz"),
       ),
       body: Padding(
@@ -148,21 +174,12 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                 return Container(
                   padding: screen_padding,
                   decoration: BoxDecoration(
-                      color: state is TimerState
-                          ? AppColor.purple_color
-                          : state is FailureState
-                              ? AppColor.primary_color
-                              : AppColor.green_color,
-                      borderRadius: radius),
+                      color: get_color(state), borderRadius: radius),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        state is TimerState
-                            ? "All the best and Best of Luck"
-                            : state is SuccesState
-                                ? "Yayy ! Success, You are great"
-                                : "Sorry ! you missed this time Try again",
+                        get_title(state),
                         style: AppTextStyle.blackHeader1
                             .copyWith(color: Colors.white),
                       ),
@@ -172,7 +189,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                       ),
                       Text(
                         "Attempts: " + total.toString(),
-                        style: AppTextStyle.subHeader4
+                        style: AppTextStyle.subHeader2
                             .copyWith(color: Colors.white),
                       ),
                       const Divider(
@@ -184,7 +201,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                             success.toString() +
                             " / " +
                             total.toString(),
-                        style: AppTextStyle.blackHeader4
+                        style: AppTextStyle.blackHeader2
                             .copyWith(color: Colors.white),
                       ),
                       height10,
@@ -192,8 +209,9 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                   ),
                 );
               }),
-              const Spacer(),
-              BlocBuilder<QuizzCubit, QuizzState>(
+    height20,
+                      height20,
+                      height20,              BlocBuilder<QuizzCubit, QuizzState>(
                 builder: (context, state) {
                   return Column(
                     children: [
@@ -213,7 +231,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                         onPressed: () {
                           if (state is TimerState) {
                             on_click();
-                          } else {
+                          } else if (state is InitState||state is FailureState||state is SuccesState) {
                             on_start();
                           }
                         },

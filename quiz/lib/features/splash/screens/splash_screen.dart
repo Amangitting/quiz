@@ -17,7 +17,7 @@ class SplashScreen extends StatelessWidget {
     });
     return Scaffold(
       body: 
-      Center(child: Text("Welcome",style: AppTextStyle.blackHeader3,),),
+      Center(child: Text("Welcome to Quizz",style: AppTextStyle.blackHeader1,),),
     );
   }
 }

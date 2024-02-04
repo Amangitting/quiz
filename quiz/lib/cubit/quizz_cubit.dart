@@ -36,7 +36,7 @@ class TimerState extends QuizzState {
 
 
 class QuizzCubit extends Cubit<QuizzState> {
-  QuizzCubit() : super(TimerState());
+  QuizzCubit() : super(InitState());
 
 
   on_click({
